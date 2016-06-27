@@ -1,0 +1,8 @@
+ParticleIntent turn {on|onoff} {first|light} light
+ParticleIntent turn {on|onoff} {second|light} light
+ParticleIntent turn {off|onoff} {first|light} light
+ParticleIntent turn {off|onoff} {second|light} light
+ParticleIntent turn {on|onoff} {first|light} channel
+ParticleIntent turn {on|onoff} {second|light} channel
+ParticleIntent turn {off|onoff} {first|light} channel
+ParticleIntent turn {off|onoff} {second|light} channel

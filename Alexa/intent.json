@@ -1,0 +1,21 @@
+{
+  "intents":[
+  {
+  "intent":"ParticleIntent",
+  "slots": [
+    {
+      "name": "light",
+      "type": "AMAZON.LITERAL"
+    },
+    {
+      "name": "onoff",
+      "type": "AMAZON.LITERAL"
+    }
+    ]
+  },
+    {
+    "intent":"HelpIntent",
+    "slots": []
+	}
+    ]
+}
