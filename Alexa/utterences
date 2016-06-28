@@ -6,3 +6,14 @@ ParticleIntent turn {on|onoff} {first|light} channel
 ParticleIntent turn {on|onoff} {second|light} channel
 ParticleIntent turn {off|onoff} {first|light} channel
 ParticleIntent turn {off|onoff} {second|light} channel
+
+HelpIntent help
+HelpIntent help me
+HelpIntent list commands
+HelpIntent list me the commands
+HelpIntent what are the commands
+HelpIntent tell me the commands
+HelpIntent what can I say
+HelpIntent how can I turn on a light
+HelpIntent how can I
+HelpIntent show me the commands
