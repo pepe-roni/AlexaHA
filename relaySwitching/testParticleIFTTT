@@ -1,0 +1,32 @@
+// This #include statement was automatically added by the Particle IDE.
+#include "RelayShield/RelayShield.h"
+
+RelayShield myRelays;
+
+void setup() 
+{
+ myRelays.begin();
+ myRelays.on(1);
+ delay(1500);
+ myRelays.on(2);
+ delay(1500);
+ myRelays.on(3);
+ delay(1500);
+ myRelays.on(4);
+}
+
+void loop() 
+{
+    delay(5000);
+    myRelays.off(1);
+    myRelays.off(2);
+    delay(5000);
+    myRelays.off(3);
+    myRelays.off(4);
+    delay(5000);
+    myRelays.on(1);
+    myRelays.on(2);
+    delay(5000);
+     myRelays.on(3);
+    myRelays.on(4);
+}
