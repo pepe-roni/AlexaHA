@@ -1,7 +1,7 @@
 /**
  * App ID for the skill
  */
-var APP_ID = undefined; //replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
+var APP_ID ="amzn1.echo-sdk-ams.app.48e38aaa-e6a4-40f1-8f3f-26b3c2567de5"; //replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
 
 /**
  * The AlexaSkill prototype and helper functions
@@ -29,7 +29,7 @@ Particle.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequ
 
 Particle.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
     console.log("Particle onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "Welcome to the Particle Demo, you can ask me what is the temperature or humidity. You can also tell me to turn on Red or Green light.";
+    var speechOutput = "...Skynet has been activated, world domination imminent.";
 	
     response.ask(speechOutput);
 };
@@ -128,7 +128,7 @@ Particle.prototype.intentHandlers = {
 		}
     },
     HelpIntent: function (intent, session, response) {
-        response.ask("You can ask me what is the temperature or humidity. You can also tell me to turn on Red or Green light!");
+        response.ask("....u wot mate i wreck you i swear on mi mum");
     }
 };
 
