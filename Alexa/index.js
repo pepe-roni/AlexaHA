@@ -1,7 +1,7 @@
 /**
  * App ID for the skill
  */
-var APP_ID = amzn1.echo-sdk-ams.app.48e38aaa-e6a4-40f1-8f3f-26b3c2567de5; //replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
+var APP_ID = undefined; //replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
 
 /**
  * The AlexaSkill prototype and helper functions
@@ -29,7 +29,7 @@ Particle.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequ
 
 Particle.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
     console.log("Particle onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "Welcome to the Particle, you can ask me to turn on different channels of a relay.";
+    var speechOutput = "Welcome to the Particle Demo, you can ask me what is the temperature or humidity. You can also tell me to turn on Red or Green light.";
 	
     response.ask(speechOutput);
 };
@@ -41,14 +41,17 @@ Particle.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest,
 Particle.prototype.intentHandlers = {
     // register custom intent handlers
     ParticleIntent: function (intent, session, response) {
+		var sensorSlot = intent.slots.sensor;
 		var lightSlot = intent.slots.light;
 		var onoffSlot = intent.slots.onoff;
 	
+		var sensor = sensorSlot ? intent.slots.sensor.value : "";
 		var light = lightSlot ? intent.slots.light.value : "";
 		var onoff = onoffSlot ? intent.slots.onoff.value : "off";
 		
 		var speakText = "";
 		
+		console.log("Sensor = " + sensor);
 		console.log("Light = " + light);
 		console.log("OnOff = " + onoff);
 		
@@ -57,32 +60,51 @@ Particle.prototype.intentHandlers = {
 		var pinvalue = "";
 		
 		// Replace these with action device id and access token
-		var deviceid = "3e002c001647353236343033";
-		var accessToken = "c52c2cffdc48a8b3a2b6847bd4b8102cbb078116";
+		var deviceid = "<<deviceid>>";
+		var accessToken = "<<accesstoken>>";
 		
 		var sparkHst = "api.particle.io";
 		
 		console.log("Host = " + sparkHst);
 		
 		// Check slots and call appropriate Particle Functions
-
-		else if(light == "first"){
+		if(sensor == "temperature"){
+			speakText = "Temperature is 69°";
+			
+			op = "gettmp";
+		}
+		else if(sensor == "humidity"){
+			speakText = "Humidity is 75%";
+			
+			op = "gethmd";
+		}
+		else if(light == "red"){
 			pin = "D2";
 		}
-		else if(light == "second"){
+		else if(light == "green"){
 			pin = "D6";
 		}
 		
 		// User is asking for temperature/pressure
-
+		if(op.length > 0){
+			var sparkPath = "/v1/devices/" + deviceid + "/" + op;
+			
+			console.log("Path = " + sparkPath);
+		
+			makeParticleRequest(sparkHst, sparkPath, "", accessToken, function(resp){
+				var json = JSON.parse(resp);
+				
+				console.log(sensor + ": " + json.return_value);
+				
+				response.tellWithCard(sensor + " is " + json.return_value + ((sensor == "temperature") ? "°" : "%"), "Particle", "Particle!");
+			});
+		}
 		// User is asking to turn on/off lights
 		else if(pin.length > 0){
-			if(onoff == "on")
-			{
+			if(onoff == "on"){
 				pinvalue = "HIGH";
 			}
-			else
-			{
+			else{
 				pinvalue = "LOW";
 			}
 			
@@ -106,7 +128,7 @@ Particle.prototype.intentHandlers = {
 		}
     },
     HelpIntent: function (intent, session, response) {
-        response.ask("You can ask me to turn on different channels of a relay!");
+        response.ask("You can ask me what is the temperature or humidity. You can also tell me to turn on Red or Green light!");
     }
 };
 
