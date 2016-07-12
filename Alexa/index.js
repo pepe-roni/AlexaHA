@@ -19,7 +19,7 @@ var Particle = function () {
     AlexaSkill.call(this, APP_ID);
 };
 
-// Extend AlexaSkill
+// extend
 Particle.prototype = Object.create(AlexaSkill.prototype);
 Particle.prototype.constructor = Particle;
 
@@ -29,7 +29,7 @@ Particle.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequ
 
 Particle.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
     console.log("Particle onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "...Skynet has been activated......world domination imminent.";
+    var speechOutput = "...Skynet active.................Skynet defense system online, .";
 	
     response.ask(speechOutput);
 };
@@ -40,7 +40,9 @@ Particle.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest,
 
 Particle.prototype.intentHandlers = {
     // register custom intent handlers
-    ParticleIntent: function (intent, session, response) {
+    ParticleIntent: function (intent, session, response) 
+    {
+    	/*
 		var sensorSlot = intent.slots.sensor;
 		var lightSlot = intent.slots.light;
 		var onoffSlot = intent.slots.onoff;
@@ -48,6 +50,7 @@ Particle.prototype.intentHandlers = {
 		var sensor = sensorSlot ? intent.slots.sensor.value : "";
 		var light = lightSlot ? intent.slots.light.value : "";
 		var onoff = onoffSlot ? intent.slots.onoff.value : "off";
+		*/
 		
 		var speakText = "";
 		
@@ -60,13 +63,23 @@ Particle.prototype.intentHandlers = {
 		var pinvalue = "";
 		
 		// Replace these with action device id and access token
-		var deviceid = "<<deviceid>>";
-		var accessToken = "<<accesstoken>>";
+		var deviceid = "2d003b001947353236343033";
+		var accessToken = "c52c2cffdc48a8b3a2b6847bd4b8102cbb078116";
 		
 		var sparkHst = "api.particle.io";
 		
 		console.log("Host = " + sparkHst);
 		
+		if(sensor == "one")
+		{
+			op = "getWater";
+		}
+		else
+		{
+			//temporary handler
+			op= "getWater";
+		}
+		/*
 		// Check slots and call appropriate Particle Functions
 		if(sensor == "temperature"){
 			speakText = "Temperature is 69°";
@@ -84,19 +97,21 @@ Particle.prototype.intentHandlers = {
 		else if(light == "green"){
 			pin = "D6";
 		}
-		
+		*/
 		// User is asking for temperature/pressure
-		if(op.length > 0){
+		if(op.length > 0)
+		{
 			var sparkPath = "/v1/devices/" + deviceid + "/" + op;
 			
 			console.log("Path = " + sparkPath);
 		
-			makeParticleRequest(sparkHst, sparkPath, "", accessToken, function(resp){
+			makeParticleRequest(sparkHst, sparkPath, "", accessToken, function(resp)
+			{
 				var json = JSON.parse(resp);
 				
 				console.log(sensor + ": " + json.return_value);
 				
-				response.tellWithCard(sensor + " is " + json.return_value + ((sensor == "temperature") ? "°" : "%"), "Particle", "Particle!");
+				response.tellWithCard("soil sensor " + sensor + " has a moisture of " + json.return_value , "Particle", "Particle!");
 			});
 		}
 		// User is asking to turn on/off lights
