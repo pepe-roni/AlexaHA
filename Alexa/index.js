@@ -42,7 +42,7 @@ Particle.prototype.intentHandlers = {
     // register custom intent handlers
     ParticleIntent: function (intent, session, response) 
     {
-    	/*
+    	
 		var sensorSlot = intent.slots.sensor;
 		var lightSlot = intent.slots.light;
 		var onoffSlot = intent.slots.onoff;
@@ -50,7 +50,7 @@ Particle.prototype.intentHandlers = {
 		var sensor = sensorSlot ? intent.slots.sensor.value : "";
 		var light = lightSlot ? intent.slots.light.value : "";
 		var onoff = onoffSlot ? intent.slots.onoff.value : "off";
-		*/
+		
 		
 		var speakText = "";
 		
@@ -128,7 +128,7 @@ Particle.prototype.intentHandlers = {
 			console.log("Path = " + sparkPath);
 			
 			var args = pin + "," + pinvalue;
-		
+		 
 			makeParticleRequest(sparkHst, sparkPath, args, accessToken, function(resp){
 				var json = JSON.parse(resp);
 				

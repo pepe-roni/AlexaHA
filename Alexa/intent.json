@@ -4,11 +4,7 @@
   "intent":"ParticleIntent",
   "slots": [
     {
-      "name": "light",
-      "type": "AMAZON.LITERAL"
-    },
-    {
-      "name": "onoff",
+      "name": "sensor",
       "type": "AMAZON.LITERAL"
     }
     ]
@@ -16,6 +12,6 @@
     {
     "intent":"HelpIntent",
     "slots": []
-	}
+  }
     ]
 }
