@@ -32,9 +32,9 @@ int relayOneHandler(String args)
     }
     else
     {
-    myRelays.on(1);
-    delay(100);
-    return 1;
+        myRelays.on(1);
+        delay(100);
+        return 1;
     }
 }
 
@@ -48,9 +48,9 @@ int relayTwoHandler(String args){
     }
     else
     {
-    myRelays.on(2);
-    delay(100);
-    return 1;
+        myRelays.on(2);
+        delay(100);
+        return 1;
     }
 }
 
@@ -63,9 +63,9 @@ int relayThreeHandler(String args){
     }
     else
     {
-    myRelays.on(3);
-    delay(100);
-    return 1;
+        myRelays.on(3);
+        delay(100);
+        return 1;
     }
 }
 
@@ -78,9 +78,9 @@ int relayFourHandler(String args){
     }
     else
     {
-    myRelays.on(4);
-    delay(100);
-    return 1;
+        myRelays.on(4);
+        delay(100);
+        return 1;
     }
 }
 
@@ -96,8 +96,8 @@ int allRelaysHandler(String args){
         else
         {
             myRelays.on(i);
-        delay(50);
-        return 1;
+            delay(50);
+            return 1;
         }
     }
     return -1;
@@ -113,7 +113,7 @@ int getWaterHandler(String args)
         return -1;
     }
     else
-    return soilM; 
+        return soilM; 
 }
 
 int getWaterTwoHandler(String args)
@@ -125,5 +125,5 @@ int getWaterTwoHandler(String args)
         return -1;
     }
     else
-    return soilSensorTwo;
+        return soilSensorTwo;
 }

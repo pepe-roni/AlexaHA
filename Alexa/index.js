@@ -63,7 +63,7 @@ Particle.prototype.intentHandlers = {
 		var pinvalue = "";
 		
 		// Replace these with action device id and access token
-		var deviceid = "2d003b001947353236343033";
+		var deviceid = "3e002c001647353236343033";
 		var accessToken = "c52c2cffdc48a8b3a2b6847bd4b8102cbb078116";
 		
 		var sparkHst = "api.particle.io";
@@ -74,10 +74,10 @@ Particle.prototype.intentHandlers = {
 		{
 			op = "getWater";
 		}
-		else
+		else 
 		{
 			//temporary handler
-			op= "getWater";
+			op= "getWaterTwo";
 		}
 		/*
 		// Check slots and call appropriate Particle Functions
