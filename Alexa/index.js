@@ -29,7 +29,7 @@ Particle.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequ
 
 Particle.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
     console.log("Particle onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "...Skynet active.................Skynet defense system online, .";
+    var speechOutput = "...Skynet active..................";
 	
     response.ask(speechOutput);
 };
