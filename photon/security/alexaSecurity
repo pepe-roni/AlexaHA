@@ -1,0 +1,46 @@
+int pirState = LOW;    
+int detected = 0;
+int pirVal = 0;                    
+ 
+int doorStatus = 0;
+ 
+void setup() {
+  pinMode(0, INPUT);
+  Particle.variable("pir", detected);
+  Particle.variable("doorStatus", doorStatus);
+}
+ 
+void loop()
+{
+//pir sensor
+  pirVal = digitalRead(0);  
+  if (pirVal == HIGH) 
+  {         
+    if (pirState == LOW) 
+    {
+      detected = 1; 
+      pirState = HIGH;
+    }
+  } 
+  else 
+  {
+    if (pirState == HIGH)
+    {
+        detected = 0;
+      pirState = LOW;
+    }
+  }
+// door
+  if(digitalRead(1)==LOW)
+  {
+    doorStatus = 0;
+    //door is closed
+  } 
+  else
+  {
+      doorStatus = 1;
+      //door open
+  }
+
+  
+}
