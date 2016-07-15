@@ -1,8 +1,12 @@
 int pirState = LOW;    
 int detected = 0;
 int pirVal = 0;                    
+int pirState = LOW;    
+int detected = 0;
+int pirVal = 0;                    
  
 int doorStatus = 0;
+  int timing = 0;
  
 void setup() {
   pinMode(0, INPUT);
@@ -31,16 +35,21 @@ void loop()
     }
   }
 // door
-  if(digitalRead(1)==LOW)
-  {
-    doorStatus = 0;
-    //door is closed
-  } 
-  else
+  //doorStatus = analogRead(1);
+  // when the door is closed, sensor returns low value, open returns insanely high values
+
+  if(analogRead(1) > 5)
   {
       doorStatus = 1;
-      //door open
+      if(timing > 20000)
+      {
+          doorStatus = 2;
+      }
+      timing++;
   }
-
-  
+  else 
+  {
+    doorStatus = 0; 
+    timing = 0;
+  }
 }
