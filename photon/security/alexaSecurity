@@ -1,9 +1,7 @@
 int pirState = LOW;    
 int detected = 0;
-int pirVal = 0;                    
-int pirState = LOW;    
-int detected = 0;
-int pirVal = 0;                    
+int pirVal = 0;    
+int previousDoor=0;
  
 int doorStatus = 0;
   int timing = 0;
@@ -12,6 +10,7 @@ void setup() {
   pinMode(0, INPUT);
   Particle.variable("pir", detected);
   Particle.variable("doorStatus", doorStatus);
+  Particle.variable("preDoor", previousDoor);
 }
  
 void loop()
@@ -34,22 +33,31 @@ void loop()
       pirState = LOW;
     }
   }
-// door
-  //doorStatus = analogRead(1);
-  // when the door is closed, sensor returns low value, open returns insanely high values
+/* door
 
+   doorStatus = analogRead(1);
+   when the door is closed, sensor returns low value, open returns insanely high values
+   stop overload of 1's
+   status = 1 open | status = 0 closed | status = 2 open but no return to ifttt
+*/
   if(analogRead(1) > 5)
   {
-      doorStatus = 1;
-      if(timing > 20000)
+      if(previousDoor>0)
       {
+          delay(5000);
           doorStatus = 2;
       }
-      timing++;
+      else
+      {
+        doorStatus = 1;
+        previousDoor = 1;
+        Particle.publish("doorStatus","open");
+      }
   }
   else 
   {
     doorStatus = 0; 
+    previousDoor = 0;
     timing = 0;
   }
 }
