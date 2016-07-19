@@ -74,10 +74,10 @@ Particle.prototype.intentHandlers = {
 		{
 			op = "getWater";
 		}
-		else 
+		else if(sensor == "openmyblinds")
 		{
 			//temporary handler
-			op= "getWaterTwo";
+			op= "servoOpen";
 		}
 		/*
 		// Check slots and call appropriate Particle Functions
@@ -104,13 +104,18 @@ Particle.prototype.intentHandlers = {
 			var sparkPath = "/v1/devices/" + deviceid + "/" + op;
 			
 			console.log("Path = " + sparkPath);
-		
+			
+
 			makeParticleRequest(sparkHst, sparkPath, "", accessToken, function(resp)
 			{
 				var json = JSON.parse(resp);
 				
 				console.log(sensor + ": " + json.return_value);
-				
+				if(op == "servoOpen")
+				{
+					response.tellWithCard("openning the blinds", "Particle", "Particle!");
+				}
+				else
 				response.tellWithCard("soil sensor " + sensor + " has a moisture of " + json.return_value , "Particle", "Particle!");
 			});
 		}
