@@ -78,6 +78,7 @@ Particle.prototype.intentHandlers = {
 		{
 			//temporary handler
 			op= "servoOpen";
+			//repsonse.tellWithCard("Openning the blinds");
 		}
 		/*
 		// Check slots and call appropriate Particle Functions
@@ -111,11 +112,7 @@ Particle.prototype.intentHandlers = {
 				var json = JSON.parse(resp);
 				
 				console.log(sensor + ": " + json.return_value);
-				if(op == "servoOpen")
-				{
-					response.tellWithCard("openning the blinds", "Particle", "Particle!");
-				}
-				else
+		
 				response.tellWithCard("soil sensor " + sensor + " has a moisture of " + json.return_value , "Particle", "Particle!");
 			});
 		}
