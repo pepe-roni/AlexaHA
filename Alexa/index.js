@@ -29,7 +29,7 @@ Particle.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequ
 
 Particle.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
     console.log("Particle onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "...Skynet active..................";
+    var speechOutput = "17 percent of the time this app works 100 percent of the time.";
 	
     response.ask(speechOutput);
 };
@@ -63,14 +63,14 @@ Particle.prototype.intentHandlers = {
 		var pinvalue = "";
 		
 		// Replace these with action device id and access token
-		var deviceid = "3e002c001647353236343033";
+		var deviceid = "2d003b001947353236343033";
 		var accessToken = "c52c2cffdc48a8b3a2b6847bd4b8102cbb078116";
 		
 		var sparkHst = "api.particle.io";
 		
 		console.log("Host = " + sparkHst);
 		
-		if(sensor == "one")
+		if(sensor == "moisture")
 		{
 			op = "getWater";
 		}
@@ -142,8 +142,17 @@ Particle.prototype.intentHandlers = {
 			response.tell("Sorry, I could not understand what you said");
 		}
     },
-    HelpIntent: function (intent, session, response) {
-        response.ask("nice");
+    HelpIntent: function (intent, session, response) 
+    {
+    	var rand = Math.floor((Math.random()*4)+1);
+    	if(rand == 1)
+        	response.ask("why don't you tell me why north korea exists huh?");
+    	else if(rand == 2)
+    		response.ask("kay mate");
+    	else if(rand == 3)
+    		response.ask("if you name is eric drink bleach");
+    	else 
+    		response.ask("get good");
     }
 };
 

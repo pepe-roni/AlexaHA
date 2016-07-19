@@ -2,6 +2,11 @@
 #include "RelayShield/RelayShield.h"
 
 RelayShield myRelays; 
+int pirState = LOW;    
+int detected = 0;
+int pirVal = 0;    
+int previousDoor=0;
+int doorStatus = 0;
 
 void setup()
 {
@@ -14,11 +19,15 @@ void setup()
     Particle.function("relayThree", relayThreeHandler);
     Particle.function("relayFour", relayFourHandler);
     Particle.function("allRelays", allRelaysHandler);
+    pinMode(0, INPUT);
+    Particle.variable("pir", detected);
+    Particle.variable("doorStatus", doorStatus);
+    Particle.variable("preDoor", previousDoor);
 }
 
 void loop()
 {
-    delay(250)
+    delay(250);
 }
 
 
