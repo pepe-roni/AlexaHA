@@ -1,42 +1,45 @@
-double resistance; 
-#define SERIES_RESISTOR     560    // Value of the series resistor in ohms.    
-#define SENSOR_PIN          0      // Analog pin which is connected to the sensor. 
-#define ZERO_VOLUME_RESISTANCE    0.00    // Resistance value (in ohms) when no liquid is present.
-#define CALIBRATION_RESISTANCE    0.00    // Resistance value (in ohms) when liquid is at max line.
-#define CALIBRATION_VOLUME        0.00    // Volume (in any units) when liquid is at max line.
-
+#define LEDPIN 13
+  // Pin 13: Arduino has an LED connected on pin 13
+  // Pin 11: Teensy 2.0 has the LED on pin 11
+  // Pin  6: Teensy++ 2.0 has the LED on pin 6
+  // Pin 13: Teensy 3.0 has the LED on pin 13
+ 
+#define SENSORPIN 2
+ 
+// variables will change:
+int sensorState = 0, lastState=0;
+int stuff;// variable for reading the pushbutton status
+ 
 void setup() 
 {
-    Particle.variable("resistance",resistance);
+  // initialize the LED pin as an output:
+  pinMode(LEDPIN, OUTPUT);      
+  // initialize the sensor pin as an input:
+  pinMode(SENSORPIN, INPUT);     
+  digitalWrite(SENSORPIN, HIGH); // turn on the pullup
+  Particle.variable("lb", stuff);
 }
-
-void loop()
-{
-    int pin = SENSOR_PIN;
-    int seriesResistance = SERIES_RESISTOR;
-   double resistance = analogRead(pin);
-  // Convert ADC reading to resistance.
-  resistance = (1023.0 / resistance) - 1.0;
-  resistance = seriesResistance / resistance;
-delay(1000);
-}
-
-double readResistance(int pin, int seriesResistance) {
-  // Get ADC value.
-  double resistance = analogRead(pin);
-  // Convert ADC reading to resistance.
-  resistance = (1023.0 / resistance) - 1.0;
-  resistance = seriesResistance / resistance;
-  return resistance;
-}
-
-double resistanceToVolume(float resistance, float zeroResistance, float calResistance, float calVolume) {
-  if (resistance > zeroResistance || (zeroResistance - calResistance) == 0.0) {
-    // Stop if the value is above the zero threshold, or no max resistance is set (would be divide by zero).
-    return 0.0;
+ 
+void loop(){
+  // read the state of the pushbutton value:
+  sensorState = digitalRead(SENSORPIN);
+ 
+  // check if the sensor beam is broken
+  // if it is, the sensorState is LOW:
+  if (sensorState == LOW) {     
+    // turn LED on:
+    digitalWrite(LEDPIN, HIGH);  
+  } 
+  else {
+    // turn LED off:
+    digitalWrite(LEDPIN, LOW); 
   }
-  // Compute scale factor by mapping resistance to 0...1.0+ range relative to maxResistance value.
-  double scale = (zeroResistance - resistance) / (zeroResistance - calResistance);
-  // Scale maxVolume based on computed scale factor.
-  return calVolume * scale;
+  
+  if (sensorState && !lastState) {
+    stuff = 0;
+  } 
+  if (!sensorState && lastState) {
+    stuff = 1;
+  }
+  lastState = sensorState;
 }

@@ -78,7 +78,6 @@ Particle.prototype.intentHandlers = {
 		{
 			//temporary handler
 			op= "servoOpen";
-		    repsonse.tell("Openning the blinds");
 		}
 		/*
 		// Check slots and call appropriate Particle Functions
@@ -117,6 +116,7 @@ Particle.prototype.intentHandlers = {
 			});
 		}
 		// User is asking to turn on/off lights
+		/*
 		else if(pin.length > 0){
 			if(onoff == "on"){
 				pinvalue = "HIGH";
@@ -140,6 +140,7 @@ Particle.prototype.intentHandlers = {
 				response.ask("Continue?");
 			});
 		}
+		*/
 		else{
 			response.tell("Sorry, I could not understand what you said");
 		}
@@ -151,8 +152,6 @@ Particle.prototype.intentHandlers = {
         	response.ask("why don't you tell me why north korea exists huh?");
     	else if(rand == 2)
     		response.ask("kay mate");
-    	else if(rand == 3)
-    		response.ask("if you name is eric drink bleach");
     	else 
     		response.ask("get good");
     }
