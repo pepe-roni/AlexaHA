@@ -78,7 +78,7 @@ Particle.prototype.intentHandlers = {
 		{
 			//temporary handler
 			op= "servoOpen";
-			//repsonse.tellWithCard("Openning the blinds");
+		    repsonse.tell("Openning the blinds");
 		}
 		/*
 		// Check slots and call appropriate Particle Functions

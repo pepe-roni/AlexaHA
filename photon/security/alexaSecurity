@@ -1,21 +1,57 @@
 int pirState = LOW;    
 int detected = 0;
 int pirVal = 0;    
+
 int previousDoor=0;
- 
 int doorStatus = 0;
-  int timing = 0;
  
-void setup() {
+Servo servoFS; 
+ 
+void setup() 
+{
   pinMode(0, INPUT);
   Particle.variable("pir", detected);
+  
   Particle.variable("doorStatus", doorStatus);
   Particle.variable("preDoor", previousDoor);
+  
+  Particle.function("servoOpen", servoOpenHandler);
+  Particle.function("servoClose", servoCloseHandler);
+  servoFS.attach(1);
 }
- 
+
+int servoOpenHandler(String args)
+{
+    servoFS.write(80);
+    delay(7000);
+    servoFS.write(90);
+    return 1;
+}
+
+int servoCloseHandler(String args)
+{
+    servoFS.write(100);
+    delay(7000);
+    servoFS.write(90);
+    return 0;
+}
+
 void loop()
 {
-//pir sensor
+    
+  pir();
+  door();
+}
+ 
+ 
+/*pir motion sensor
+stirng hold is there to keep the console log limited to one change in motion, as it only polls/logs 1 once.
+dectected is raw detection from the sensor, at max refresh rate the sensor puts out 10 polls/ detection.
+pirVal is the raw input and pulse from the sensor
+*/
+void pir()
+{
+  String hold;
   pirVal = digitalRead(0);  
   if (pirVal == HIGH) 
   {         
@@ -23,6 +59,11 @@ void loop()
     {
       detected = 1; 
       pirState = HIGH;
+      hold = hold+"i";
+      if(strlen(hold)>9)
+      {
+          Particle.publish("detected", "motion");
+      }
     }
   } 
   else 
@@ -30,16 +71,22 @@ void loop()
     if (pirState == HIGH)
     {
         detected = 0;
-      pirState = LOW;
+        pirState = LOW;
+        hold = "";
     }
   }
-/* door
-
-   doorStatus = analogRead(1);
-   when the door is closed, sensor returns low value, open returns insanely high values
-   stop overload of 1's
-   status = 1 open | status = 0 closed | status = 2 open but no return to ifttt
-*/
+}  
+  
+// door
+  //doorStatus = analogRead(1);
+  // when the door is closed, sensor returns low value, open returns insanely high values
+  // stop overload of 1's
+  //status = 1 open
+  //status = 0 closed
+  //status = 2 open but no return to ifttt
+  
+void door()
+{
   if(analogRead(1) > 5)
   {
       if(previousDoor>0)
@@ -58,6 +105,11 @@ void loop()
   {
     doorStatus = 0; 
     previousDoor = 0;
-    timing = 0;
   }
 }
+
+int getDoor(String args)
+{
+    return doorStatus;
+}
+ 
