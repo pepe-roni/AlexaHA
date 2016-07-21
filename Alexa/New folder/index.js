@@ -117,7 +117,7 @@ Particle.prototype.intentHandlers = {
 			makeParticleRequest(sparkHst, sparkPath, args, accessToken, function(resp){
 				var json = JSON.parse(resp);
 				
-				//console.log("Temperature: " + json.return_value);
+				console.log("Temperature: " + json.return_value);
 				
 				response.tellWithCard("OK, " + device + " device turned " + onoff, "Particle", "Particle!");
 				response.ask("Continue?");

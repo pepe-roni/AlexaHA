@@ -29,7 +29,7 @@ Particle.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequ
 
 Particle.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
     console.log("Particle onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "17 percent of the time this app works 100 percent of the time.";
+    var speechOutput = "....skynet active..";
 	
     response.ask(speechOutput);
 };
@@ -44,18 +44,18 @@ Particle.prototype.intentHandlers = {
     {
     	
 		var sensorSlot = intent.slots.sensor;
-		var lightSlot = intent.slots.light;
+		var deviceSlot = intent.slots.device;
 		var onoffSlot = intent.slots.onoff;
 	
 		var sensor = sensorSlot ? intent.slots.sensor.value : "";
-		var light = lightSlot ? intent.slots.light.value : "";
+		var device = deviceSlot ? intent.slots.device.value : "";
 		var onoff = onoffSlot ? intent.slots.onoff.value : "off";
 		
 		
 		var speakText = "";
 		
 		console.log("Sensor = " + sensor);
-		console.log("Light = " + light);
+		console.log("Device = " + device);
 		console.log("OnOff = " + onoff);
 		
 		var op = "";
@@ -70,34 +70,21 @@ Particle.prototype.intentHandlers = {
 		
 		console.log("Host = " + sparkHst);
 		
-		if(sensor == "moisture")
-		{
+		// Check slots and call appropriate Particle Functions
+		if(sensor == "moisture"){
+			speakText = "moisture is 2800";
+			
 			op = "getWater";
 		}
-		else if(sensor == "openmyblinds")
-		{
-			//temporary handler
-			op= "servoOpen";
-		}
-		/*
-		// Check slots and call appropriate Particle Functions
-		if(sensor == "temperature"){
-			speakText = "Temperature is 69°";
+		else if(sensor == "door"){
+			speakText = "door is open";
 			
-			op = "gettmp";
+			op = "getDoor";
 		}
-		else if(sensor == "humidity"){
-			speakText = "Humidity is 75%";
-			
-			op = "gethmd";
-		}
-		else if(light == "red"){
+		else if(device == "blinds"){
 			pin = "D2";
 		}
-		else if(light == "green"){
-			pin = "D6";
-		}
-		*/
+
 		// User is asking for temperature/pressure
 		if(op.length > 0)
 		{
@@ -116,31 +103,31 @@ Particle.prototype.intentHandlers = {
 			});
 		}
 		// User is asking to turn on/off lights
-		/*
 		else if(pin.length > 0){
-			if(onoff == "on"){
-				pinvalue = "HIGH";
+			if(onoff == "open")
+			{
+				pinvalue = "open";
 			}
-			else{
-				pinvalue = "LOW";
+			else
+			{
+				pinvalue = "close";
 			}
 			
-			var sparkPath = "/v1/devices/" + deviceid + "/ctrlled";
+			var sparkPath = "/v1/devices/" + deviceid + "/servoHandler";
 			
 			console.log("Path = " + sparkPath);
 			
-			var args = pin + "," + pinvalue;
+			var args =pinvalue;
 		 
 			makeParticleRequest(sparkHst, sparkPath, args, accessToken, function(resp){
 				var json = JSON.parse(resp);
 				
 				console.log("Temperature: " + json.return_value);
 				
-				response.tellWithCard("OK, " + light + " light turned " + onoff, "Particle", "Particle!");
+				response.tellWithCard("OK, " + blinds +" are "+ onoff, "Particle", "Particle!");
 				response.ask("Continue?");
 			});
 		}
-		*/
 		else{
 			response.tell("Sorry, I could not understand what you said");
 		}
@@ -148,12 +135,9 @@ Particle.prototype.intentHandlers = {
     HelpIntent: function (intent, session, response) 
     {
     	var rand = Math.floor((Math.random()*4)+1);
-    	if(rand == 1)
-        	response.ask("why don't you tell me why north korea exists huh?");
-    	else if(rand == 2)
-    		response.ask("kay mate");
-    	else 
-    		response.ask("get good");
+    	//if(rand == 1)
+    	response.ask("k");
+
     }
 };
 
