@@ -5,22 +5,36 @@ int pirVal = 0;
 int previousDoor=0;
 int doorStatus = 0;
  
+int sensorState = 0;
+int lastState = 0;
+int broken =0;
+
 Servo servoFS; 
  
 void setup() 
 {
   pinMode(0, INPUT);
+  pinMode(2, INPUT);
+  digitalWrite(2,HIGH);
   Particle.variable("pir", detected);
   
   Particle.variable("doorStatus", doorStatus);
   Particle.variable("preDoor", previousDoor);
   
-  Particle.function("servoOpen", servoOpenHandler);
-  Particle.function("servoClose", servoCloseHandler);
+  Particle.function("getWater", getWaterHandler);
+  
+  Particle.function("servoHandler", servoHandler);
+  
+  Particle.variable("lb", broken);
+  
+  Particle.function("getDoor", getDoor);
+  
   servoFS.attach(1);
+  
 }
 
-int servoOpenHandler(String args)
+//servos
+int servoHandler(String args)
 {
     servoFS.write(80);
     delay(7000);
@@ -28,12 +42,34 @@ int servoOpenHandler(String args)
     return 1;
 }
 
-int servoCloseHandler(String args)
+//soil moisture
+int getWaterHandler(String args)
 {
-    servoFS.write(100);
-    delay(7000);
-    servoFS.write(90);
-    return 0;
+    int soilM = analogRead(3);
+    String callback = args;
+    if(callback == "error" || strlen(callback)>10)
+    {
+        return -1;
+    }
+    else
+    return soilM;
+}
+
+
+//beam break
+
+void lb()
+{
+   int rawRead = analogRead(0);
+   if(rawRead>1)
+   {
+       broken = 0;
+   }
+   else
+   {
+       broken = 1; 
+       Particle.publish("lb", "broken");    
+   }
 }
 
 void loop()
@@ -41,11 +77,12 @@ void loop()
     
   pir();
   door();
+  lb();
 }
  
  
 /*pir motion sensor
-stirng hold is there to keep the console log limited to one change in motion, as it only polls/logs 1 once.
+string hold is there to keep the console log limited to one change in motion, as it only polls/logs 1 once.
 dectected is raw detection from the sensor, at max refresh rate the sensor puts out 10 polls/ detection.
 pirVal is the raw input and pulse from the sensor
 */
@@ -60,10 +97,8 @@ void pir()
       detected = 1; 
       pirState = HIGH;
       hold = hold+"i";
-      if(strlen(hold)>9)
-      {
-          Particle.publish("detected", "motion");
-      }
+      Particle.publish("detected", PRIVATE);
+      
     }
   } 
   else 
@@ -99,6 +134,7 @@ void door()
         doorStatus = 1;
         previousDoor = 1;
         Particle.publish("doorStatus","open");
+        
       }
   }
   else 
@@ -112,4 +148,3 @@ int getDoor(String args)
 {
     return doorStatus;
 }
- 
