@@ -63,7 +63,7 @@ Particle.prototype.intentHandlers = {
 		var pinvalue = "";
 		
 		// Replace these with action device id and access token
-		var deviceid = "2d003b001947353236343033";
+		var deviceid = "3e002c001647353236343033";
 		var accessToken = "c52c2cffdc48a8b3a2b6847bd4b8102cbb078116";
 		
 		var sparkHst = "api.particle.io";
@@ -81,7 +81,8 @@ Particle.prototype.intentHandlers = {
 			
 			op = "getDoor";
 		}
-		else if(device == "blinds"){
+		else if(device == "blinds")
+		{
 			pin = "D2";
 		}
 
@@ -106,14 +107,14 @@ Particle.prototype.intentHandlers = {
 		else if(pin.length > 0){
 			if(onoff == "open")
 			{
-				pinvalue = "open";
+				pinvalue = "";
 			}
 			else
 			{
-				pinvalue = "close";
+				pinvalue = "c";
 			}
 			
-			var sparkPath = "/v1/devices/" + deviceid + "/servoHandler";
+			var sparkPath = "/v1/devices/" + deviceid + "/servoHandle"+ pinvalue ;
 			
 			console.log("Path = " + sparkPath);
 			
