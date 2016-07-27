@@ -23,20 +23,29 @@ void setup()
   
   Particle.function("getWater", getWaterHandler);
   
-  Particle.function("servoHandler", servoHandler);
+  Particle.function("servoHandle", servoHandler);
+  Particle.function("servoHandlec", servoCloseHandler);
   
   Particle.variable("lb", broken);
   
   Particle.function("getDoor", getDoor);
   
-  servoFS.attach(1);
+  servoFS.attach(0);
   
 }
 
 //servos
 int servoHandler(String args)
 {
-    servoFS.write(80);
+    servoFS.write(0);
+    delay(7000);
+    servoFS.write(90);
+    return 1;
+}
+
+int servoCloseHandler(String args)
+{
+    servoFS.write(180);
     delay(7000);
     servoFS.write(90);
     return 1;
@@ -64,6 +73,7 @@ void lb()
    if(rawRead>1)
    {
        broken = 0;
+       delay(5000);
    }
    else
    {
@@ -74,7 +84,6 @@ void lb()
 
 void loop()
 {
-    
   pir();
   door();
   lb();
@@ -126,7 +135,7 @@ void door()
   {
       if(previousDoor>0)
       {
-          delay(5000);
+          delay(6000);
           doorStatus = 2;
       }
       else
@@ -148,3 +157,4 @@ int getDoor(String args)
 {
     return doorStatus;
 }
+ 
