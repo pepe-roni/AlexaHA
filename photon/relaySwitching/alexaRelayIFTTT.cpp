@@ -1,88 +1,93 @@
-// This #include statement was automatically added by the Particle IDE.
 #include "RelayShield/RelayShield.h"
 
-// Create an instance of the RelayShield library, so we have something to talk to
-RelayShield myRelays;
+RelayShield myRelays; 
+Servo servoFS;
 
-void setup() {
-    // .begin() sets up a couple of things and is necessary to use the rest of the functions
-    //max 4 subscriptions
-    myRelays.begin();
-    Particle.subscribe("allRelays", allRelaysHandler, MY_DEVICES);
-    Particle.subscribe("relayOne", relayOneHandler, MY_DEVICES);
-    Particle.subscribe("relayTwo", relayTwoHandler, MY_DEVICES);
-    Particle.subscribe("relayThree", relayThreeHandler, MY_DEVICES);
-    Particle.subscribe("relayFour", relayFourHandler, MY_DEVICES);
-    // Use myRelays.begin(2); if you have the square, white RelayShield (from the Core)
-    // to use, just add a '2' between the parentheses in the code above.
-}
-
-void loop() 
+void setup()
 {
-    delay(100);
-    
+    myRelays.begin();
+    Particle.function("getWater", getWaterHandler);
+    Particle.function("getWater2", getWaterTwoHandler);
+    //IFTTT relay control
+    Particle.function("relayOne", relayOneHandler);
+    Particle.function("relayTwo", relayTwoHandler);
+    Particle.function("relayThree", relayThreeHandler);
+    Particle.function("relayFour", relayFourHandler);
+    Particle.function("allRelays", allRelaysHandler);
+    //servo
+    Particle.function("servoPull",servoHandler);
+    servoFS.attach(0);
 }
 
-void relayOneHandler(String event, String data)
+void loop()
+{
+    delay(250);
+}
+
+
+int relayOneHandler(String args)
 {
     if(myRelays.isOn(1))
     {
         myRelays.off(1);
         delay(100);
+        return 0;
     }
     else
     {
-    myRelays.on(1);
-    delay(100);
+        myRelays.on(1);
+        delay(100);
+        return 1;
     }
 }
 
-void relayTwoHandler(String event, String data)
-{
+int relayTwoHandler(String args){
     
     if(myRelays.isOn(2))
     {
         myRelays.off(2);
         delay(100);
+        return 0;
     }
     else
     {
-    myRelays.on(2);
-    delay(100);
+        myRelays.on(2);
+        delay(100);
+        return 1;
     }
 }
 
-void relayThreeHandler(String event, String data)
-{
+int relayThreeHandler(String args){
     if(myRelays.isOn(3))
     {
         myRelays.off(3);
         delay(100);
+        return 0;
     }
     else
     {
-    myRelays.on(3);
-    delay(100);
+        myRelays.on(3);
+        delay(100);
+        return 1;
     }
 }
 
-void relayFourHandler(String event, String data)
-{
+int relayFourHandler(String args){
     if(myRelays.isOn(4))
     {
         myRelays.off(4);
         delay(100);
+        return 0;
     }
     else
     {
-    myRelays.on(4);
-    delay(100);
+        myRelays.on(4);
+        delay(100);
+        return 1;
     }
 }
 
-void allRelaysHandler(String event, String data)
-{
-
+int allRelaysHandler(String args){
     for(int i=1; i<5; i++)
     {
         if(myRelays.isOn(i))
@@ -93,8 +98,40 @@ void allRelaysHandler(String event, String data)
         else
         {
             myRelays.on(i);
-        delay(50);
+            delay(50);
         }
     }
+    return -1;
  
+}
+
+int servoHandler(String args)
+{
+    servoFS.write(180);
+    delay(10000);
+    servoFS.write(90);
+    return 1;
+}
+int getWaterHandler(String args)
+{
+    int soilM = analogRead(0);
+    String callback = args; 
+    if(callback == "error")
+    {
+        return -1;
+    }
+    else
+        return soilM; 
+}
+
+int getWaterTwoHandler(String args)
+{
+    String callback = args;
+    int soilSensorTwo = analogRead(1);
+    if(callback == "error")
+    {
+        return -1;
+    }
+    else
+        return soilSensorTwo;
 }
