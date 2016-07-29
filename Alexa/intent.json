@@ -1,17 +1,25 @@
 {
-  "intents":[
+  "intents": [
+    {
+      "intent": "ParticleIntent",
+      "slots": [
   {
-  "intent":"ParticleIntent",
-  "slots": [
+          "name": "sensor",
+          "type": "LITERAL"
+        },
+        {
+          "name": "device",
+          "type": "LITERAL"
+        },
+        {
+          "name": "onoff",
+          "type": "LITERAL"
+        }
+      ]
+    },
     {
-      "name": "sensor",
-      "type": "AMAZON.LITERAL"
+      "intent": "HelpIntent",
+      "slots": []
     }
-    ]
-  },
-    {
-    "intent":"HelpIntent",
-    "slots": []
-  }
-    ]
+  ]
 }

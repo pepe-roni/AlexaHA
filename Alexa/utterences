@@ -1,8 +1,15 @@
-ParticleIntent what is the soil moisture
-ParticleIntent check soil moisture
-ParticleIntent return soil moisture
-ParticleIntent return moisture {one|sensor}
-ParticleIntent return moisture {two|sensor}
+ParticleIntent what is the soil's {moisture|sensor}
+ParticleIntent return {moisture|sensor}
+ParticleIntent get soil {moisture|sensor}
+ParticleIntent is my {door|sensor} open
+ParticleIntent is there something between the {beam|sensor}
+ParticleIntent check {door|sensor}
+ParticleIntent check {moisture|sensor}
+ParticleIntent check {beam|sensor}
+ParticleIntent {open|onoff} my {blinds|device}
+ParticleIntent {close|onoff} my {blinds|device}
+ParticleIntent {open|onoff} the {blinds|device}
+ParticleIntent {close|onoff} the {blinds|device}
 
 HelpIntent help
 HelpIntent help me
