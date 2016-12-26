@@ -1,6 +1,7 @@
+// This #include statement was automatically added by the Particle IDE.
 #include "RelayShield/RelayShield.h"
 
-RelayShield myRelays; 
+RelayShield myRelays;
 Servo servoFS;
 
 void setup()
@@ -14,6 +15,7 @@ void setup()
     Particle.function("relayThree", relayThreeHandler);
     Particle.function("relayFour", relayFourHandler);
     Particle.function("allRelays", allRelaysHandler);
+    Particle.function("allRelaysOff", allRelaysOffHandler);
     //servo
     Particle.function("servoPull",servoHandler);
     servoFS.attach(0);
@@ -21,28 +23,19 @@ void setup()
 
 void loop()
 {
-    delay(250);
+    delay(50);
 }
 
 
 int relayOneHandler(String args)
 {
-    if(myRelays.isOn(1))
-    {
-        myRelays.off(1);
-        delay(100);
-        return 0;
-    }
-    else
-    {
-        myRelays.on(1);
-        delay(100);
-        return 1;
-    }
+    myRelays.on(1);
+    delay(500);
+    myRelays.off(1);
 }
 
 int relayTwoHandler(String args){
-    
+
     if(myRelays.isOn(2))
     {
         myRelays.off(2);
@@ -102,7 +95,19 @@ int allRelaysHandler(String args){
         }
     }
     return -1;
- 
+}
+
+int allRelaysOffHandler(String args){
+    for(int i=0; i<5; i++)
+    {
+        if(myRelays.isOn(i))
+        {
+            myRelays.off(i);
+            delay(50);
+        }
+    }
+    delay(100);
+    return -2;
 }
 
 int servoHandler(String args)
@@ -115,13 +120,13 @@ int servoHandler(String args)
 int getWaterHandler(String args)
 {
     int soilM = analogRead(0);
-    String callback = args; 
+    String callback = args;
     if(callback == "error")
     {
         return -1;
     }
     else
-        return soilM; 
+        return soilM;
 }
 
 int getWaterTwoHandler(String args)
